@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-reverseproxy-config
+data:
+  default.conf: |-
+    server {
+     server_name event-rendering-host.com;
+     listen 80;
+     #deny access to .htaccess files, if Apache's document root
+     #concurs with nginx's one
+     #
+     location ~ /\.ht {
+         deny  all;
+     }
+     location / {
+         proxy_pass http://nodejs-service:8080; #this is the service described in nodejs.yaml
+     }
+    }

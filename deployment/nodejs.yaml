@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+spec:
+ selector:
+    app:  nodejs
+ ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app:  nodejs
+  name: nodejs-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - image: event-rendering-api:v1
+        imagePullPolicy: Never
+        name: kubecont-nodejs
+        ports:
+        - containerPort: 8080 
